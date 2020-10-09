@@ -1,5 +1,6 @@
 var express = require("express");
 var RegisterUser = require("../models/registerModel");
+var auth = require("../middleware/auth")
 
 var router = new express.Router();
 
@@ -28,14 +29,27 @@ router.post("/login", async (req, res) => {
     res.status(400).send(e.message)
   }
 
-})
-router.get("/users", async(req, res) => {
+});
+
+router.post("/logout", auth, async (req, res) => {
+  try {
+		req.user.tokens = []
+		await req.user.save();
+
+		res.send();
+	} catch (err) {
+		res.status(500).send(err);
+  }
+
+});
+
+router.get("/users", async (req, res) => {
   try {
     var users = await RegisterUser.find({})
     res.status(200).send(users)
   } catch (e) {
     res.status(400).send(e)
   }
-})
+});
 
 module.exports = router;
