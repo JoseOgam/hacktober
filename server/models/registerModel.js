@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 var validator = require("validator");
 var bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken")
 
 const Schema = mongoose.Schema;
 
@@ -38,6 +39,12 @@ const RegisterSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  tokens: [{
+    token: {
+      type: String,
+      required:true
+    }
+  }]
 });
 RegisterSchema.pre("save", async function (next) {
   var user = this;
@@ -47,8 +54,17 @@ RegisterSchema.pre("save", async function (next) {
   next();
 });
 
-RegisterSchema.statics.findByCredentials = async (email, password) => {
-  var user = await RegisterUser.findOne({ email })
+RegisterSchema.methods.generateToken = async function () {
+  var user = this;
+  var token = jwt.sign({ _id: user._id.toString() }, "Auth system")
+  user.tokens = user.tokens.concat({ token })
+  await user.save()
+  return token
+
+}
+
+RegisterSchema.statics.findByCredentials = async function (email, password) {
+  var user = await  RegisterUser.findOne({ email })
   if (!user) {
     throw new Error("unable to login")
   }
