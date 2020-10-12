@@ -1,6 +1,6 @@
 const express = require("express");
-require("./db/mongoose");
-var registerRouter = require("./router/registerRouter");
+require("./server/db/mongoose");
+var registerRouter = require("./server/router/registerRouter");
 
 const app = express();
 

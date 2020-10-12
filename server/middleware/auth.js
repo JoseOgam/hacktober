@@ -3,7 +3,7 @@ var RegisterUser = require('../models/registerModel');
 
 var auth = async (req, res, next) => {
 	try {
-		const token = req.header('Authorization').replace('User ', '');
+		const token = req.header('Authorization').replace('Bearer ', '');
 		const decoded = jwt.verify(token, 'Auth system');
 		const user = await RegisterUser.findOne({ _id: decoded._id, 'tokens.token': token })
 
