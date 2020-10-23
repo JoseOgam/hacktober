@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const RegisterPage = () => {
   var [createUser, setCreateUser] = useState([]);
@@ -7,8 +8,26 @@ const RegisterPage = () => {
   var [password, setPassword] = useState("");
   var [confirmPassword, setConfirmPassword] = useState("");
 
-  var handleSubmit = (e) => {
+  var handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const saveData = ({
+      name: name,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    })
+     
+    const resp = await axios.post(`http://localhost:5000/register`, saveData)
+    console.log(resp.data)
+    setName("")
+
+    setEmail("")
+
+    setPassword("")
+
+    setConfirmPassword("")
+
     setCreateUser([...createUser, [name, email, password, confirmPassword]]);
   };
   return (
