@@ -18,7 +18,7 @@ const RegisterPage = () => {
       confirmPassword: confirmPassword
     })
      
-    const resp = await axios.post(`http://localhost:5000/register`, saveData)
+    const resp = await axios.post(`/register`, saveData)
     console.log(resp.data)
     setName("")
 
