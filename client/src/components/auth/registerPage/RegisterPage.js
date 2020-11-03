@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./register.css"
 
 const RegisterPage = () => {
   var [createUser, setCreateUser] = useState([]);
@@ -31,8 +32,9 @@ const RegisterPage = () => {
     setCreateUser([...createUser, [name, email, password, confirmPassword]]);
   };
   return (
-    <div>
+   <div>
       <h2>Registration</h2>
+       <div className="registration">
       <form onSubmit={handleSubmit}>
         <span>
           <label>Name : </label>
@@ -72,6 +74,7 @@ const RegisterPage = () => {
         </span>
         <button>Register</button>
       </form>
+      </div>
     </div>
   );
 };
