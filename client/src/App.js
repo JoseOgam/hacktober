@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
+import axios from "axios"
 import "./App.css";
 import NavBar from "./components/common/NavBar";
 import HomePage from "./components/homePage/HomePage";
@@ -12,7 +13,18 @@ function App() {
     token: undefined,
     user: undefined
   })
-  useEffect(()=>{},[])
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      let token = localStorage.getItem("auth-token")
+      if (token === null) {
+        localStorage.setItem("auth-token", "");
+        token = "";
+      }
+      const tokenRes = await axios.post("/tokenIsValid", null, { headers: { "Authorization": token } });
+     console.log(tokenRes.data)
+    }
+    checkLoggedIn()
+  },[])
   return (
     <div className="App">
       <UserContext.Provider value={{ userData, setUserData }}>

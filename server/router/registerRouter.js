@@ -1,6 +1,7 @@
 var express = require("express");
 var RegisterUser = require("../models/registerModel");
 var auth = require("../middleware/auth")
+var jwt = require("jsonwebtoken")
 
 var router = new express.Router();
 
@@ -51,5 +52,31 @@ router.get("/users", async (req, res) => {
     res.status(400).send(e)
   }
 });
+
+router.post("/tokenIsValid", async (req, res) => {
+  try {
+    const token = req.header("Authorization");
+   if (!token) {
+    return res.json(false)
+   }
+  const verified = jwt.verify(token);
+  if (!verified) {
+    return res.json(false)
+  }
+  const user = await RegisterUser.findById(verified.id);
+  if (!user) {
+    return res.json(false)
+  }
+  return res.json(true)
+  } catch (e) {
+    res.send(500).json({error: e.message})
+  }
+})
+
+router.get("/", auth, async (req, res) => {
+  const user = await RegisterUser.findById(req.user);
+  res.json(user)
+  
+})
 
 module.exports = router;
