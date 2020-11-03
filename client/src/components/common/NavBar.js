@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthOptions from "../auth/authOptions";
 
 const NavBar = () => {
   return (
     <div>
-      <ul>
-        <Link to="/">Home</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/login">Login</Link>
-      </ul>
+      <header id="Header">
+          <Link className="title" to="/">
+            <h2>Mern Auth system</h2>
+          </Link>
+          <AuthOptions />
+     </header>
     </div>
   );
 };
