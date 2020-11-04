@@ -73,7 +73,7 @@ router.post("/tokenIsValid", async (req, res) => {
   }
 })
 
-router.get("/", auth, async (req, res) => {
+router.get("/loggedUser", auth, async (req, res) => {
   const user = await RegisterUser.findById(req.user);
   res.json(user)
   

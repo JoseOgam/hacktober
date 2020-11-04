@@ -9,9 +9,9 @@ import RegisterPage from "./components/auth/registerPage/RegisterPage";
 import UserContext from "./context/UserContext"
 
 function App() {
-  const { userData, setUserData } = useState({
+  const [ userData, setUserData ] = useState({
     token: undefined,
-    user: undefined
+    user: undefined,
   })
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -20,9 +20,14 @@ function App() {
         localStorage.setItem("auth-token", "");
         token = "";
       }
-      const tokenRes = await axios.post("/tokenIsValid", null, { headers: { "Authorization": token } });
-     console.log(tokenRes.data)
-    }
+      const tokenRes = await axios.post("http://localhost:5000/tokenIsValid", null, { headers: { "Authorization": token } });
+      if (tokenRes.data) {
+        const userRes = await axios.get("http://localhost:5000/loggedUser",{ headers: { "Authorization": token } });
+        setUserData({
+          user: userRes.data,
+        });
+      };
+    };
     checkLoggedIn()
   },[])
   return (
