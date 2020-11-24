@@ -53,7 +53,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
-router.post("/tokenIsValid",auth, async (req, res) => {
+router.post("/tokenIsValid", async (req, res) => {
   try {
     const token = req.header("Authorization");
    if (!token) {
