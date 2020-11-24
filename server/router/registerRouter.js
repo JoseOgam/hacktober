@@ -53,17 +53,17 @@ router.get("/users", async (req, res) => {
   }
 });
 
-router.post("/tokenIsValid", async (req, res) => {
+router.post("/tokenIsValid",auth, async (req, res) => {
   try {
     const token = req.header("Authorization");
    if (!token) {
     return res.json(false)
    }
-  const verified = jwt.verify(token);
+  const verified = jwt.verify(token, 'Auth system');
   if (!verified) {
     return res.json(false)
   }
-  const user = await RegisterUser.findById(verified.id);
+  const user = await RegisterUser.findOne({ _id: verified._id, 'tokens.token': token });
   if (!user) {
     return res.json(false)
   }
@@ -73,7 +73,7 @@ router.post("/tokenIsValid", async (req, res) => {
   }
 })
 
-router.get("/loggedUser", auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const user = await RegisterUser.findById(req.user);
   res.json(user)
   

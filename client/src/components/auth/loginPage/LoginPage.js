@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import axios from "axios"
 
 const LoginPage = () => {
   var [login, setLogin] = useState([]);
   var [email, setEmail] = useState("");
   var [password, setPassword] = useState("");
 
-  var handleLogin = (e) => {
+  var handleLogin = async(e) => {
     e.preventDefault();
-    setLogin([...login, [email, password]]);
+    const data = {
+      email: email,
+      password: password
+    }
+    const resp = await axios.post(`/login`, data)
+    console.log(resp.data)
   };
   return (
     <div>
