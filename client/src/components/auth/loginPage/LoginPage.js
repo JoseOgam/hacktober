@@ -6,14 +6,19 @@ const LoginPage = () => {
   var [email, setEmail] = useState("");
   var [password, setPassword] = useState("");
 
-  var handleLogin = async(e) => {
+  var handleLogin = (e) => {
     e.preventDefault();
     const data = {
       email: email,
       password: password
     }
-    const resp = await axios.post(`/login`, data)
-    console.log(resp.data)
+    axios.post(`/login`, data)
+      .then((resp) => {
+        localStorage.setItem('token', resp.token)
+        console.log(resp)
+      })
+      .catch((error) => console.log(error))
+  
   };
   return (
     <div>
